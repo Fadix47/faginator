@@ -8,7 +8,7 @@ How to install
 pip install faginator
 ```
 
-# Attention!
+### Attention!
 You need to use py-cord version 2.1.1 or higher
 
 This module helps you to create your own View in py-cord with paginate functions
