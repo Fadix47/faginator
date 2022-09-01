@@ -23,7 +23,6 @@ This module helps you to create your own View in py-cord with paginate functions
 |          content `<optional>`   |                    `list`                   |   `None`   |                        List of message contents                    |
 |    extra_buttons `<optional>`   |                    `list`                    | `None` |        Two dimensional list with buttons. Each nest list can have 5 or less buttons |
 |   delete_on_timeout `<optional>`   |                    `bool`                   |   `False`  |      Delete message on timeout      |
-
 |   disable_on_timeout `<optional>`   |                    `bool`                   |   `True`  |   Disable buttons on timeout  |
 | timeout `<optional>`|                    `int`                   |   `180`  | Timeout for deleting or disabling buttons|
 |  close_button `<optional>`  |                    `bool`                   |   `True`  |   Adds close button |
