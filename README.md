@@ -16,9 +16,9 @@ This module helps you to create your own View in py-cord with paginate functions
 
 # Parameters
 
-|           Name             |                     Type                     |Defaults|                           Information                               |
+|           Name             |                     Type                     |Default|                           Information                               |
 |:-------------------------:|:-------------------------------------------:|:----------:|:-------------------------------------------------------------------:|
-|           ctx             | `discord.Client` `discord.ext.commands.Bot` |            |                                                                     |
+|           ctx             | `discord.ext.commands.Context` |            |                                                                     |
 |         embeds `<optional>`    |              `list`              |  `None`  |       List of embeds        |
 |          content `<optional>`   |                    `list`                   |   `None`   |                        List of message contents                    |
 |    extra_buttons `<optional>`   |                    `list`                    | `None` |        Two dimensional list with buttons. Each nest list can have 5 or less buttons |
@@ -30,6 +30,22 @@ This module helps you to create your own View in py-cord with paginate functions
 |   lang `<optional>`  |                    `str`                   | `en` | Set language of buttons, pages. For this moment available: "en", "ru", "de" |
 | only_author `<optional>`|                    `bool`                   | `True` |    If only author can use buttons to paginate    |
 | skip_buttons `<optional>`|                    `bool`                   | `False` |   Adds additional buttons to move the page to the beginning or end   |
+
+#Methods
+
+###start - sends the menu
+Args
+| Name | Type | Default | Information |
+| type `<optional>` | `str` | `"text"` | The type of message. Can be `text` for text-commands or `slash` for "slash-commands" |
+| ephemeral `<optional>` | `bool` | `False` | Ephemeral status for respond, works ONLY with `slash` |
+
+###disable - disable the menu
+Args
+| Name | Type | Default | Information |
+| remove_buttons `<optional>` | `bool` | `False` | Should disabling menu remove buttons |
+| remove_message `<optional>` | `bool` | `False` | Should disabling menu delete message |
+| disable_buttons `<optional>` | `bool` | `True` | Should disabling menu disable buttons |
+ 
 
 # Usage example
 
@@ -54,9 +70,8 @@ async def test(ctx):
     embeds = [emb1, emb2]
     contents = ['test 1', 'test 2']
 
-    view = Faginator(ctx, content=contents, embeds=embeds, show_pages=True)
-    await ctx.respond(view=view)
-    await view.update()
+    faginator = Faginator(ctx, content=contents, embeds=embeds, show_pages=True)
+    await faginator.start(type="slash")
 
 client.run('YOUR_TOKEN_HERE')
 
@@ -102,10 +117,8 @@ async def test(ctx):
 
     extra_buttons = [[btn1, btn2, btn3, btn4], [btn5, btn6]]
 
-    view = Faginator(ctx, embeds=embeds, extra_buttons=extra_buttons, show_pages=True, lang='en')
-    await ctx.send(view=view)
-    await view.update()
-
+    faginator = Faginator(ctx, embeds=embeds, extra_buttons=extra_buttons, show_pages=True, lang='en')
+    await faginator.start()
 
 client.run('YOUR_TOKEN_HERE')
 ```
