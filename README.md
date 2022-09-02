@@ -33,15 +33,19 @@ This module helps you to create your own View in py-cord with paginate functions
 
 #Methods
 
-###start - sends the menu
+### start - sends the menu
+
 Args
+
 | Name | Type | Default | Information |
+|:----------------:|:----------:|:----------:|:-------------------:|
 | type `<optional>` | `str` | `"text"` | The type of message. Can be `text` for text-commands or `slash` for "slash-commands" |
 | ephemeral `<optional>` | `bool` | `False` | Ephemeral status for respond, works ONLY with `slash` |
 
-###disable - disable the menu
+### disable - disable the menu
 Args
 | Name | Type | Default | Information |
+|:----------------:|:----------:|:----------:|:-------------------:|
 | remove_buttons `<optional>` | `bool` | `False` | Should disabling menu remove buttons |
 | remove_message `<optional>` | `bool` | `False` | Should disabling menu delete message |
 | disable_buttons `<optional>` | `bool` | `True` | Should disabling menu disable buttons |
