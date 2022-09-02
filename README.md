@@ -31,7 +31,7 @@ This module helps you to create your own View in py-cord with paginate functions
 | only_author `<optional>`|                    `bool`                   | `True` |    If only author can use buttons to paginate    |
 | skip_buttons `<optional>`|                    `bool`                   | `False` |   Adds additional buttons to move the page to the beginning or end   |
 
-#Methods
+# Methods
 
 ### start - sends the menu
 
