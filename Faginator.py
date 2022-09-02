@@ -3,7 +3,7 @@ from discord.ui import View, Button
 from discord import ButtonStyle
 
 '''
- Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
+ Copyright (c) 2022 Fadix
  
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
