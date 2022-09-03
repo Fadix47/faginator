@@ -244,7 +244,8 @@ class Faginator(View):
                     view.skip_start_button.disabled = False
 
                     view.next_button.disabled = True
-                    view.cur_page = len(view.embeds) - 1
+                    try: view.cur_page = len(view.embeds) - 1
+                    except: view.cur_page = len(view.content) - 1
                     view.back_button.disabled = False
 
                     if view.extra_buttons is not None:
