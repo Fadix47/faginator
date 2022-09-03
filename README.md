@@ -1,5 +1,5 @@
 # faginator
-Simple paginator for py-cord with custom buttons. You can use it in responds, or default post messages
+Simple paginator for py-cord with custom buttons. You can use it in responds, or default post messages.
 This module helps you to create your own View in py-cord with paginate functions
 
 How to install 
