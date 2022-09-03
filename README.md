@@ -9,7 +9,7 @@ pip install faginator
 ```
 
 ### Attention!
-You need to use py-cord version 2.1.1 or higher
+You need to use py-cord version 2.1.0 or higher
 
 # Parameters
 
