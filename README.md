@@ -1,6 +1,6 @@
 # faginator
 Simple paginator for py-cord with custom buttons. You can use it in responds, or default post messages
-
+This module helps you to create your own View in py-cord with paginate functions
 
 How to install 
 
@@ -10,9 +10,6 @@ pip install faginator
 
 ### Attention!
 You need to use py-cord version 2.1.1 or higher
-Also do not forget to `await YOURVIEW.update()` after responding or sending message
-
-This module helps you to create your own View in py-cord with paginate functions
 
 # Parameters
 
