@@ -150,7 +150,7 @@ class Faginator(View):
             await self.message.edit(view=self)
         self.stop()
 
-    async def start(self, type: str = 'text', ephemeral: bool = False): #types: slash, text
+    async def start(self, type: str = 'text', interact: discord.Interaction = None, ephemeral: bool = False): #types: slash, text
         view = self
 
         def check_emb_content_view(view):
@@ -244,8 +244,7 @@ class Faginator(View):
                     view.skip_start_button.disabled = False
 
                     view.next_button.disabled = True
-                    try: view.cur_page = len(view.embeds) - 1
-                    except: view.cur_page = len(view.content) - 1
+                    view.cur_page = len(view.embeds) - 1
                     view.back_button.disabled = False
 
                     if view.extra_buttons is not None:
@@ -272,8 +271,11 @@ class Faginator(View):
             view.skip_end_button.callback = skip_end_callback
             view.skip_start_button.callback = skip_start_callback
             res = check_emb_content_view(view)
+
             if type == 'slash':
                 await view.ctx.respond(view=view, embed=res[0], content=res[1], ephemeral=ephemeral)
+            elif type == 'interaction':
+                await interact.response.send_message(view=view, embed=res[0], content=res[1], ephemeral=ephemeral)
             elif type == 'text':
                 await view.ctx.send(view=view, embed=res[0], content=res[1])
 
