@@ -36,7 +36,8 @@ Args
 
 | Name | Type | Default | Information |
 |:----------------:|:----------:|:----------:|:-------------------:|
-| type `<optional>` | `str` | `"text"` | The type of message. Can be `text` for text-commands or `slash` for "slash-commands" |
+| type `<optional>` | `str` | `"text"` | The type of message. Can be `text` for "text-commands", `slash` for "slash-commands" or `interaction` for button responds |
+| interact `<optional>` | `discord.Interaction` | `None` | Interaction, which need to be responded (Only for `interaction` type) |
 | ephemeral `<optional>` | `bool` | `False` | Ephemeral status for respond, works ONLY with `slash` |
 
 ### disable - disable the menu
