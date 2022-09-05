@@ -281,8 +281,11 @@ class Faginator(View):
 
         except TimeoutError:
             if view.disable_on_timeout:
-                view.disable_all_items()
-                await view.message.edit(view=view)
+                try:
+                    view.disable_all_items()
+                    await view.message.edit(view=view)
+                except: pass
             if view.delete_on_timeout:
-                await view.message.delete()
+                try: await view.message.delete()
+                except: pass
             view.stop()
