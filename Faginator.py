@@ -71,7 +71,7 @@ class Faginator(View):
         self.ctx = ctx
         self.cur_page = 0
 
-        if extra_buttons is not None:
+        if extra_buttons is not None and extra_buttons != []:
             for _ in range(len(extra_buttons)):
                 extra_buttons[_] = extra_buttons[_][:5]
                 for u in range(len(extra_buttons[_])):
