@@ -3,29 +3,6 @@ from discord.ui import View, Button
 from discord import ButtonStyle
 from typing import Union
 
-'''
- Copyright (c) 2022 Fadix47
-
- Permission is hereby granted, free of charge, to any person obtaining
- a copy of this software and associated documentation files (the
- "Software"), to deal in the Software without restriction, including
- without limitation the rights to use, copy, modify, merge, publish,
- distribute, sublicense, and/or sell copies of the Software, and to
- permit persons to whom the Software is furnished to do so, subject to
- the following conditions:
-
- The above copyright notice and this permission notice shall be included
- in all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-'''
-
 locales = {
     "NEXT": {
         "en": "Next",
@@ -66,8 +43,9 @@ class Faginator(View):
                  close_button: bool = True, show_pages: bool = True, lang: str = 'en', only_author: bool = True,
                  skip_buttons: bool = False):
 
-        super().__init__(timeout=timeout, disable_on_timeout=disable_on_timeout)
+        super().__init__(timeout=timeout)
 
+        self.disable_on_timeout = disable_on_timeout
         self.ctx = ctx
         self.cur_page = 0
 
@@ -150,7 +128,7 @@ class Faginator(View):
             await self.message.edit(view=self)
         self.stop()
 
-    async def start(self, type: str = 'text', interact: discord.Interaction = None, ephemeral: bool = False): #types: slash, text
+    async def start(self, type: str = 'text', interact: discord.Interaction = None, ephemeral: bool = False):
         view = self
 
         def check_emb_content_view(view):
@@ -165,12 +143,12 @@ class Faginator(View):
             return [new_emb, new_content]
 
         try:
-
-            def check(i):
+            def check(i, view):
                 return (i.message.id == view.message.id) * ((i.user == view.ctx.author) if view.only_author else True)
 
             async def back_callback(interaction):
-                if check(interaction):
+                if check(interaction, view):
+                    await interaction.response.defer()
                     view.next_button.disabled = False
                     view.skip_end_button.disabled = False
                     view.skip_start_button.disabled = False
@@ -182,17 +160,18 @@ class Faginator(View):
                         view.back_button.disabled = False
                     if view.extra_buttons is not None:
                         view.clear_items()
-                        for _ in view.extra_buttons[self.cur_page]: view.add_item(_)
+                        for _ in view.extra_buttons[view.cur_page]: view.add_item(_)
                         [view.add_item(i) for i in [view.back_button, view.next_button]]
                         if view.skip_buttons: [view.add_item(i) for i in [view.skip_start_button, view.skip_end_button]]
                         if view.close_button: view.add_item(view.deter_button)
 
                     res = check_emb_content_view(view)
 
-                    await interaction.response.edit_message(view=self, embed=res[0], content=res[1])
+                    await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
 
             async def next_callback(interaction):
-                if check(interaction):
+                if check(interaction, view):
+                    await interaction.response.defer()
                     view.back_button.disabled = False
                     view.skip_end_button.disabled = False
                     view.skip_start_button.disabled = False
@@ -220,7 +199,8 @@ class Faginator(View):
                     await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
 
             async def skip_start_callback(interaction):
-                if check(interaction):
+                if check(interaction, view):
+                    await interaction.response.defer()
                     view.skip_start_button.disabled = True
                     view.skip_end_button.disabled = False
 
@@ -239,12 +219,13 @@ class Faginator(View):
                     await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
 
             async def skip_end_callback(interaction):
-                if check(interaction):
+                if check(interaction, view):
+                    await interaction.response.defer()
                     view.skip_end_button.disabled = True
                     view.skip_start_button.disabled = False
 
                     view.next_button.disabled = True
-                    view.cur_page = len(view.embeds) - 1
+                    view.cur_page = len(view.embeds) - 1 if view.embeds else len(view.content) - 1
                     view.back_button.disabled = False
 
                     if view.extra_buttons is not None:
@@ -259,11 +240,13 @@ class Faginator(View):
                     await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
 
             async def close_callback(interaction):
-                if check(interaction):
+                if check(interaction, view):
                     try:
                         await view.message.delete()
                     except discord.errors.NotFound:
                         print("[ERROR] Seems like your message ephemeral or posted before latest bot restart")
+                    except Exception as e:
+                        raise e
 
             view.back_button.callback = back_callback
             view.next_button.callback = next_callback
@@ -278,6 +261,9 @@ class Faginator(View):
                 await interact.response.send_message(view=view, embed=res[0], content=res[1], ephemeral=ephemeral)
             elif type == 'text':
                 await view.ctx.send(view=view, embed=res[0], content=res[1])
+
+            view.back_button.disabled = True
+            await view.message.edit(view=view)
 
         except TimeoutError:
             if view.disable_on_timeout:
