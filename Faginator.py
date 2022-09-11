@@ -148,7 +148,6 @@ class Faginator(View):
 
             async def back_callback(interaction):
                 if check(interaction, view):
-                    await interaction.response.defer()
                     view.next_button.disabled = False
                     view.skip_end_button.disabled = False
                     view.skip_start_button.disabled = False
@@ -171,7 +170,6 @@ class Faginator(View):
 
             async def next_callback(interaction):
                 if check(interaction, view):
-                    await interaction.response.defer()
                     view.back_button.disabled = False
                     view.skip_end_button.disabled = False
                     view.skip_start_button.disabled = False
@@ -200,7 +198,6 @@ class Faginator(View):
 
             async def skip_start_callback(interaction):
                 if check(interaction, view):
-                    await interaction.response.defer()
                     view.skip_start_button.disabled = True
                     view.skip_end_button.disabled = False
 
@@ -220,7 +217,6 @@ class Faginator(View):
 
             async def skip_end_callback(interaction):
                 if check(interaction, view):
-                    await interaction.response.defer()
                     view.skip_end_button.disabled = True
                     view.skip_start_button.disabled = False
 
