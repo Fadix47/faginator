@@ -75,6 +75,7 @@ class Faginator(View):
                 self.content = None
             if embeds is None:
                 self.embeds = None
+
         else:
             if embeds is not None:
                 self.embeds = embeds
@@ -165,8 +166,8 @@ class Faginator(View):
                         if view.close_button: view.add_item(view.deter_button)
 
                     res = check_emb_content_view(view)
-
-                    await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
+                    await view.message.edit(view=view, embed=res[0], content=res[1])
+                    await interaction.response.defer()
 
             async def next_callback(interaction):
                 if check(interaction, view):
@@ -194,10 +195,12 @@ class Faginator(View):
                         if view.close_button: view.add_item(view.deter_button)
                     res = check_emb_content_view(view)
 
-                    await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
+                    await view.message.edit(view=view, embed=res[0], content=res[1])
+                    await interaction.response.defer()
 
             async def skip_start_callback(interaction):
                 if check(interaction, view):
+                    await interaction.response.defer()
                     view.skip_start_button.disabled = True
                     view.skip_end_button.disabled = False
 
@@ -213,7 +216,8 @@ class Faginator(View):
                         if view.close_button: view.add_item(view.deter_button)
                     res = check_emb_content_view(view)
 
-                    await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
+                    await view.message.edit(view=view, embed=res[0], content=res[1])
+                    await interaction.response.defer()
 
             async def skip_end_callback(interaction):
                 if check(interaction, view):
@@ -233,7 +237,8 @@ class Faginator(View):
 
                     res = check_emb_content_view(view)
 
-                    await interaction.response.edit_message(view=view, embed=res[0], content=res[1])
+                    await view.message.edit(view=view, embed=res[0], content=res[1])
+                    await interaction.response.defer()
 
             async def close_callback(interaction):
                 if check(interaction, view):
@@ -259,7 +264,9 @@ class Faginator(View):
                 await view.ctx.send(view=view, embed=res[0], content=res[1])
 
             view.back_button.disabled = True
-            await view.message.edit(view=view)
+            message = await view.ctx.fetch_message(view.message.id)
+            view.message = message
+            await view.message.edit(view=view, embed=res[0], content=res[1])
 
         except TimeoutError:
             if view.disable_on_timeout:
@@ -270,4 +277,5 @@ class Faginator(View):
             if view.delete_on_timeout:
                 try: await view.message.delete()
                 except: pass
-            view.stop()
+            try: view.stop()
+            except discord.errors.NotFound: pass
