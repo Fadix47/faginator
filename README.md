@@ -24,7 +24,7 @@ You need to use py-cord version 2.1.0 or higher
 | timeout `<optional>`|                    `int`                   |   `180`  | Timeout for deleting or disabling buttons|
 |  close_button `<optional>`  |                    `bool`                   |   `True`  |   Adds close button |
 |    show_pages `<optional>`    |                    `bool`                   |   `True`   | Adds text at the bottom showing the current page |
-|   lang `<optional>`  |                    `str`                   | `en` | Set language of buttons, pages. For this moment available: "en", "ru", "de" |
+|   lang `<optional>`  |                    `str`                   | `en` | Set language of buttons, pages. By this moment available: "en", "ru", "de" |
 | only_author `<optional>`|                    `bool`                   | `True` |    If only author can use buttons to paginate    |
 | skip_buttons `<optional>`|                    `bool`                   | `False` |   Adds additional buttons to move the page to the beginning or end   |
 
