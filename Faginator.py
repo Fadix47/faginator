@@ -200,7 +200,6 @@ class Faginator(View):
 
             async def skip_start_callback(interaction):
                 if check(interaction, view):
-                    await interaction.response.defer()
                     view.skip_start_button.disabled = True
                     view.skip_end_button.disabled = False
 
