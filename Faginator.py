@@ -145,7 +145,10 @@ class Faginator(View):
 
         try:
             def check(i, view):
-                return (i.message.id == view.message.id) * ((i.user == view.ctx.author) if view.only_author else True)
+                if isinstance(view.ctx, discord.Interaction):
+                    return (i.message.id == view.message.id) * ((i.user == view.ctx.user) if view.only_author else True)
+                else:
+                    return (i.message.id == view.message.id) * ((i.user == view.ctx.author) if view.only_author else True)
 
             async def back_callback(interaction):
                 if check(interaction, view):
@@ -200,6 +203,7 @@ class Faginator(View):
 
             async def skip_start_callback(interaction):
                 if check(interaction, view):
+                    await interaction.response.defer()
                     view.skip_start_button.disabled = True
                     view.skip_end_button.disabled = False
 
@@ -263,7 +267,10 @@ class Faginator(View):
                 await view.ctx.send(view=view, embed=res[0], content=res[1])
 
             view.back_button.disabled = True
-            message = await view.ctx.fetch_message(view.message.id)
+            if isinstance(view.ctx, discord.Interaction):
+                message = view.message
+            else:
+                message = await view.ctx.fetch_message(view.message.id)
             view.message = message
             await view.message.edit(view=view, embed=res[0], content=res[1])
 
