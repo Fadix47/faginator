@@ -203,7 +203,6 @@ class Faginator(View):
 
             async def skip_start_callback(interaction):
                 if check(interaction, view):
-                    await interaction.response.defer()
                     view.skip_start_button.disabled = True
                     view.skip_end_button.disabled = False
 
@@ -262,6 +261,7 @@ class Faginator(View):
             if type == 'slash':
                 await view.ctx.respond(view=view, embed=res[0], content=res[1], ephemeral=ephemeral)
             elif type == 'interaction':
+                view.ctx = interact
                 await interact.response.send_message(view=view, embed=res[0], content=res[1], ephemeral=ephemeral)
             elif type == 'text':
                 await view.ctx.send(view=view, embed=res[0], content=res[1])
@@ -271,6 +271,7 @@ class Faginator(View):
                 message = view.message
             else:
                 message = await view.ctx.fetch_message(view.message.id)
+
             view.message = message
             await view.message.edit(view=view, embed=res[0], content=res[1])
 
