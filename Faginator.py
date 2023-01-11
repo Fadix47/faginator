@@ -251,11 +251,25 @@ class Faginator(View):
                     except Exception as e:
                         raise e
 
+            async def on_timeout():
+                if view.disable_on_timeout:
+                    try:
+                        view.disable_all_items()
+                        await view.message.edit(view=view)
+                    except: pass
+                if view.delete_on_timeout:
+                    try: await view.message.delete()
+                    except: pass
+                try: view.stop()
+                except discord.errors.NotFound: pass
+
             view.back_button.callback = back_callback
             view.next_button.callback = next_callback
             view.deter_button.callback = close_callback
             view.skip_end_button.callback = skip_end_callback
             view.skip_start_button.callback = skip_start_callback
+            view.on_timeout = on_timeout
+            view.skip_start_button.disabled = True
             res = check_emb_content_view(view)
 
             if type == 'slash':
@@ -276,13 +290,4 @@ class Faginator(View):
             await view.message.edit(view=view, embed=res[0], content=res[1])
 
         except TimeoutError:
-            if view.disable_on_timeout:
-                try:
-                    view.disable_all_items()
-                    await view.message.edit(view=view)
-                except: pass
-            if view.delete_on_timeout:
-                try: await view.message.delete()
-                except: pass
-            try: view.stop()
-            except discord.errors.NotFound: pass
+            pass
